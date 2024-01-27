@@ -3,6 +3,7 @@ const app = express();
 
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
+const courseRoutes = require("./routes/Course");
 
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -40,6 +41,7 @@ cloudinaryConnect();
 //mount the routes
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/course", courseRoutes);
 
 //default route
 app.get("/", (req, res) => {
