@@ -19,7 +19,7 @@ import Cart from "./Components/Core/Dashboard/cart";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import { useSelector } from "react-redux";
 import EnrolledCourses from "./Components/Core/Dashboard/EnrolledCourses";
-import AddCourse from "./Components/Core/Dashboard/Add Course";
+import AddCourse from "./Components/Core/Dashboard/addCourse";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
