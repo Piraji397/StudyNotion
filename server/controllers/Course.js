@@ -14,6 +14,8 @@ exports.createCourse = async (req, res) => {
       price,
       category,
       tag,
+      instructions,
+      status,
     } = req.body;
 
     // get thumbnail
@@ -34,10 +36,15 @@ exports.createCourse = async (req, res) => {
         message: "All fields are required",
       });
     }
+    if (!status || status === undefined) {
+      status = "Draft";
+    }
 
     //check for instructor
     const userId = req.user.id;
-    const instructorDetails = await User.findById(userId);
+    const instructorDetails = await User.findById(userId, {
+      accountType: "Instructor",
+    });
 
     if (!instructorDetails) {
       return res.status(404).json({
@@ -71,6 +78,8 @@ exports.createCourse = async (req, res) => {
       category: categoryDetails._id,
       tag: tag,
       thumbnail: thumbnailImage.secure_url,
+      status: status,
+      instructions: instructions,
     });
 
     //add the course to the user schema

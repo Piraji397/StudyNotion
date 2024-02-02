@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sidebarLinks } from "../../../data/dashboard-links";
 import SideberLinks from "./SidebarLinks";
-import { FiSettings } from "react-icons/fi";
 import { VscSignOut } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../services/operations/authAPI";

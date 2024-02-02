@@ -48,7 +48,7 @@ const {
 //     Course Routes
 // ****************************
 
-//courses can onlu be created by instructor
+//courses can only be created by instructor
 router.post("/createCourse", auth, isInstructor, createCourse);
 //Add a section to a course
 router.post("/addSection", auth, isInstructor, createSection);
