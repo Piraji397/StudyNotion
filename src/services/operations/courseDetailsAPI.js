@@ -280,6 +280,7 @@ export const fetchInstructorCourses = async (token) => {
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Instructor Courses");
     }
+    toast.success("Courses fetched successfully.");
     result = response?.data?.data;
   } catch (error) {
     console.log("INSTRUCTOR COURSES API ERROR............", error);
