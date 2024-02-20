@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import {
 } from "../../../../../../utils/slices/courseSlice";
 import IconBtn from "../../../../../common/IconBtn";
 
-const PublishCourse = () => {
+const PublishCourseForm = () => {
   const {
     register,
     handleSubmit,
@@ -21,6 +21,7 @@ const PublishCourse = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
+  const { course } = useSelector((state) => state.course);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -72,14 +73,12 @@ const PublishCourse = () => {
       <p className="font-inter font-semibold text-[24px] leading-8 text-richblack-5">
         Publish Settings
       </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full flex flex-col gap-y-4"
+      >
         <label className="w-full flex flex-row gap-1">
-          <input
-            type="checkbox"
-            name="public"
-            {...register("public")}
-            className="w-full form-style"
-          />
+          <input type="checkbox" name="public" {...register("public")} />
           {/* {errors.sectionName && (
             <span className="text-pink-200 font-inter font-normal text-sm">
               {errors.sectionName.message}
@@ -89,25 +88,25 @@ const PublishCourse = () => {
             Make this as public
           </p>
         </label>
-        <div className="flex justify-items-end gap-x-3">
+        <div className="flex justify-end gap-x-3">
           <button
             disabled={loading}
             type="button"
             onClick={goBack}
-            className="flex rounded-lg px-6 py-3 bg-richblack-400"
+            className="flex rounded-lg px-6 py-3 bg-richblack-400 text-richblack-900"
           >
             Back
           </button>
-        </div>
-        <IconBtn
-          disabled={loading}
-          text="save changes"
-          customClasses="text-yellow-50
+          <IconBtn
+            disabled={loading}
+            text="save changes"
+            customClasses="bg-yellow-50
         px-4 py-2 flex justify-center items-center gap-2 rounded-lg outline outline-[1px]"
-        />
+          />
+        </div>
       </form>
     </div>
   );
 };
 
-export default PublishCourse;
+export default PublishCourseForm;

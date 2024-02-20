@@ -6,13 +6,13 @@ require("dotenv").config();
 exports.createSubSection = async (req, res) => {
   try {
     //fetch data from req body
-    const { sectionId, title, timeDuration, description } = req.body;
+    const { sectionId, title, description } = req.body;
 
     //fetch file/video
-    const video = req.files.videoFile;
+    const video = req.files.video;
 
     //validation
-    if (!sectionId || !title || !timeDuration || !description || !video) {
+    if (!sectionId || !title || !description || !video) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -28,14 +28,14 @@ exports.createSubSection = async (req, res) => {
     //create a sub section
     const subSectionDetails = await SubSection.create({
       title,
-      timeDuration,
+      timeDuration: `${uploadDetails.duration}`,
       description,
       videoUrl: uploadDetails.secure_url,
     });
 
     //update section with this sub section id
     const updateSectionDetails = await Section.findByIdAndUpdate(
-      sectionId,
+      { _id: sectionId },
       {
         $push: {
           subSection: subSectionDetails._id,
@@ -44,7 +44,7 @@ exports.createSubSection = async (req, res) => {
 
       { new: true }
     )
-      .populate("SubSection")
+      .populate("subSection")
       .exec();
 
     //return res
@@ -99,9 +99,9 @@ exports.updateSubSection = async (req, res) => {
     //update the subsection
     await subSection.save();
 
-    const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
-    );
+    const updatedSection = await Section.findById(sectionId)
+      .populate("subSection")
+      .exec();
 
     //return res
     return res.status(200).json({
@@ -123,12 +123,27 @@ exports.deleteSubSection = async (req, res) => {
     //fetch data
     const { sectionId, subSectionId } = req.body;
 
-    //delete subsection
-    await SubSection.findByIdAndDelete(subSectionId);
-
-    const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
+    await Section.findByIdAndUpdate(
+      { _id: sectionId },
+      {
+        $pull: {
+          subSection: subSectionId,
+        },
+      }
     );
+
+    //delete subsection
+    const subSection = await SubSection.findByIdAndDelete(subSectionId);
+
+    if (!subSection) {
+      return res
+        .status(404)
+        .json({ success: false, message: "SubSection not found" });
+    }
+
+    const updatedSection = await Section.findById(sectionId)
+      .populate("subSection")
+      .exec();
 
     //return res
     return res.status(200).json({

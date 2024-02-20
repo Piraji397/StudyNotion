@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createSection,
+  createSubSection,
   updateSubSection,
 } from "../../../../../../services/operations/courseDetailsAPI";
 import { setCourse } from "../../../../../../utils/slices/courseSlice";
@@ -97,7 +97,7 @@ const SubSectionModal = ({
     formData.append("description", data.lectureDesc);
     formData.append("video", data.lectureVideo);
     setLoading(true);
-    const result = await createSection(formData, token);
+    const result = await createSubSection(formData, token);
     if (result) {
       const updatedCourseContent = course.courseContent.map((section) =>
         section._id === modalData ? result : section
@@ -111,14 +111,14 @@ const SubSectionModal = ({
 
   return (
     <div className="absolute top-[0%] left-[0%] z-50">
-      <div className="w-screen bg-richblack-600 bg-opacity-80 flex justify-center items-center">
+      <div className="w-screen bg-richblack-300 bg-opacity-80 flex justify-center items-center">
         <div className=" rounded-lg w-[665px]">
           <div className="w-full flex justify-between items-center border-b border-b-richblack-600 py-4 px-6 gap-3 bg-richblack-700">
             <p className="font-inter font-semibold text-[18px] leading-6 text-richblack-5">
               {add && "Adding"} {view && "Viewing"} {edit && "Editing"} Lecture
             </p>
             <button onClick={() => (!loading ? setModalData(null) : "")}>
-              <RxCross1 />
+              <RxCross1 className="text-richblack-50" />
             </button>
           </div>
           <form
