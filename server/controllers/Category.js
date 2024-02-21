@@ -1,5 +1,9 @@
 const Category = require("../models/Category");
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 //create tag
 exports.createCategory = async (req, res) => {
   try {
@@ -55,37 +59,69 @@ exports.showAllCategories = async (req, res) => {
 exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
-
     const selectedCategory = await Category.findById(categoryId)
-      .populate("courses")
+      .populate({
+        path: "course",
+        match: { status: "Published" },
+        populate: "ratingAndReviews",
+      })
       .exec();
 
     if (!selectedCategory) {
       return res.status(404).json({
         success: false,
-        message: "Data not found",
+        message: "Category not found",
+      });
+    }
+
+    if (selectedCategory.course.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No courses found for the selected category.",
       });
     }
 
     //get courses for different categories
-    const differentCategories = await Category.find({
+    const categoriesExceptSelected = await Category.find({
       _id: {
         $ne: categoryId,
       },
-    })
-      .populate("courses")
+    });
+
+    let differentCategory = await Category.findOne(
+      categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
+        ._id
+    )
+      .populate({
+        path: "course",
+        match: { status: "Published" },
+      })
       .exec();
 
     //get top selling courses
-    //HW
+    const allCategories = await Category.find()
+      .populate({
+        path: "course",
+        match: { status: "Published" },
+        populate: {
+          path: "instructor",
+        },
+      })
+      .exec();
+
+    const allCourses = allCategories.flatMap((category) => category.course);
+    const mostSellingCourses = allCourses
+      .sort((a, b) => b.sold - a.sold)
+      .slice(0, 10);
 
     return res.status(200).json({
       success: true,
       data: {
         selectedCategory,
-        differentCategories,
+        differentCategory,
+        mostSellingCourses,
       },
-      message: "All catedory page details fetched successfully",
+      message: "All category page details fetched successfully",
     });
   } catch (error) {
     return res.status(500).json({

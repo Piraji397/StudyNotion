@@ -22,6 +22,7 @@ import EnrolledCourses from "./Components/Core/Dashboard/EnrolledCourses";
 import AddCourse from "./Components/Core/Dashboard/addCourse";
 import MyCourses from "./Components/Core/Dashboard/MyCourses";
 import EditCourse from "./Components/Core/Dashboard/editCourse";
+import Catalog from "./Pages/Catalog";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -70,6 +71,7 @@ function App() {
             </OpenRoute>
           }
         />
+        <Route path="catalog/:catalogName" element={<Catalog />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<Error />} />

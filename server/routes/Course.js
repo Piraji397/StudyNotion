@@ -88,7 +88,7 @@ router.post("/createCategory", auth, isAdmin, createCategory);
 //show all categories
 router.get("/getAllCategories", showAllCategories);
 //get category page details
-router.get("/getCategoryPageDetails", categoryPageDetails);
+router.post("/getCategoryPageDetails", categoryPageDetails);
 
 // ****************************
 // Rating and reviews routes //
