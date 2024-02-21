@@ -55,12 +55,12 @@ const RenderSteps = () => {
             </div>
           ))}
           <div
-            className={`absolute left-[112px] top-[03px] h-[calc(34px/2)] w-[33%]  border-dashed border-b-2 ${
+            className={`absolute lg:left-[15%] top-[03px] h-[calc(34px/2)] w-[33%]  border-dashed border-b-2 ${
               step > 1 ? "border-yellow-100" : "border-richblack-500"
             }`}
           ></div>
           <div
-            className={`absolute right-[112px] top-[03px] h-[calc(34px/2)] w-[33%]  border-dashed border-b-2 ${
+            className={`absolute right-[15%] top-[03px] h-[calc(34px/2)] w-[33%]  border-dashed border-b-2 ${
               step > 2 ? "border-yellow-100" : "border-richblack-500"
             }`}
           ></div>

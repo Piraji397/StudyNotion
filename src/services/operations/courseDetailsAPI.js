@@ -312,11 +312,10 @@ export const deleteCourse = async (data, token) => {
 // get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token) => {
   const toastId = toast.loading("Loading...");
-  //   dispatch(setLoading(true));
   let result = null;
   try {
     const response = await apiConnector(
-      "DELETE",
+      "POST",
       GET_FULL_COURSE_DETAILS_AUTHENTICATED,
       {
         courseId,
